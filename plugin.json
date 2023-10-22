@@ -1,0 +1,16 @@
+{
+  "slug": "NroN",
+  "name": "NroN",
+  "version": "2.0.0",
+  "license": "MIT",
+  "brand": "TSA",
+  "author": "Lucas Kuzma",
+  "authorEmail": "hello@strange.agency",
+  "authorUrl": "the.strange.agency",
+  "pluginUrl": "",
+  "manualUrl": "",
+  "sourceUrl": "",
+  "donateUrl": "",
+  "changelogUrl": "",
+  "modules": []
+}

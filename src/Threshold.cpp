@@ -3,55 +3,62 @@
 
 struct Threshold : Module {
 	enum ParamId {
-		PITCH_PARAM,
+		THRESHOLD_PARAM,
 		PARAMS_LEN
 	};
 	enum InputId {
-		PITCH_INPUT,
+		RESET_INPUT,
+		CLOCK_INPUT,
 		INPUTS_LEN
 	};
 	enum OutputId {
-		SINE_OUTPUT,
+		OUT_OUTPUT,
 		OUTPUTS_LEN
 	};
 	enum LightId {
-		BLINK_LIGHT,
+		CHARGE_LIGHT,
 		LIGHTS_LEN
 	};
 
-    float phase = 0.f;
-	float blinkPhase = 0.f;
+    float charge = 0.f;
+    
+    dsp::PulseGenerator pulseGenerator;
+    bool clockPulse = false;
+
+    dsp::SchmittTrigger clockTrigger;
+    dsp::SchmittTrigger resetTrigger;
 
 	Threshold() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
-		configParam(PITCH_PARAM, 0.f, 1.f, 0.f, "");
-		configInput(PITCH_INPUT, "");
-		configOutput(SINE_OUTPUT, "");
+		configParam(THRESHOLD_PARAM, 0.f, 1.f, 0.f, "Threshold");
+		configInput(RESET_INPUT, "Reset");
+		configInput(CLOCK_INPUT, "Clock");
+		configOutput(OUT_OUTPUT, "Trigger");
 	}
 
 	void process(const ProcessArgs& args) override {
-        // Compute the frequency from the pitch parameter and input
-		float pitch = params[PITCH_PARAM].getValue();
-		pitch += inputs[PITCH_INPUT].getVoltage();
-		// The default frequency is C4 = 261.6256f
-		float freq = dsp::FREQ_C4 * std::pow(2.f, pitch);
 
-		// Accumulate the phase
-		phase += freq * args.sampleTime;
-		if (phase >= 1.f)
-			phase -= 1.f;
+        if (inputs[RESET_INPUT].isConnected()) {
+            if (resetTrigger.process(inputs[RESET_INPUT].getVoltage(), 0.1f, 1.f)) {
+                this->charge = 0;
+            }
+        }
 
-		// Compute the sine output
-		float sine = std::sin(2.f * M_PI * phase);
-		// Audio signals are typically +/-5V
-		// https://vcvrack.com/manual/VoltageStandards
-		outputs[SINE_OUTPUT].setVoltage(5.f * sine);
+        if (inputs[CLOCK_INPUT].isConnected()) {
+            if (clockTrigger.process(inputs[CLOCK_INPUT].getVoltage(), 0.1f, 1.f)) {
+                this->charge += .1;
+            }
+        }
 
-		// Blink light at 1Hz
-		blinkPhase += args.sampleTime;
-		if (blinkPhase >= 1.f)
-			blinkPhase -= 1.f;
-		lights[BLINK_LIGHT].setBrightness(blinkPhase < 0.5f ? 1.f : 0.f);
+        if (this->charge >= 1) {
+            pulseGenerator.trigger(1e-3f);
+            this->charge = 0;
+        }
+
+        clockPulse = pulseGenerator.process(args.sampleTime);
+        outputs[OUT_OUTPUT].setVoltage(clockPulse ? 10.0f : 0.0f);    
+  
+        lights[CHARGE_LIGHT].setBrightness(charge);
 	}
 };
 
@@ -66,13 +73,14 @@ struct ThresholdWidget : ModuleWidget {
 		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(15.24, 46.063)), module, Threshold::PITCH_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(15.24, 43.524)), module, Threshold::THRESHOLD_PARAM));
 
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(15.24, 77.478)), module, Threshold::PITCH_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(15.24, 64.25)), module, Threshold::RESET_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(15.24, 84.976)), module, Threshold::CLOCK_INPUT));
 
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(15.24, 108.713)), module, Threshold::SINE_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(15.24, 105.701)), module, Threshold::OUT_OUTPUT));
 
-		addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(15.24, 25.81)), module, Threshold::BLINK_LIGHT));
+		addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(15.24, 22.799)), module, Threshold::CHARGE_LIGHT));
 	}
 };
 

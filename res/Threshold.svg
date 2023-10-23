@@ -39,7 +39,7 @@
      inkscape:window-width="1512"
      inkscape:window-height="900"
      inkscape:window-x="0"
-     inkscape:window-y="38"
+     inkscape:window-y="25"
      inkscape:window-maximized="0"
      inkscape:snap-bbox-midpoints="true"
      inkscape:snap-nodes="false"
@@ -74,16 +74,17 @@
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="components">
+     inkscape:label="components"
+     style="display:none">
     <circle
        style="display:inline;opacity:1;vector-effect:none;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        id="path4954"
        cx="15.24"
-       cy="43.524319"
+       cy="42.964291"
        r="4"
        inkscape:label="threshold" />
     <circle
-       cy="64.25"
+       cy="71.345245"
        cx="15.24"
        id="circle4956"
        style="display:inline;opacity:1;vector-effect:none;fill:#00ff00;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
@@ -93,22 +94,43 @@
        style="display:inline;opacity:1;vector-effect:none;fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        id="circle4958"
        cx="15.24"
-       cy="105.70136"
+       cy="113.91668"
        r="4"
        inkscape:label="out" />
     <circle
        inkscape:label="charge"
        r="4"
-       cy="22.798637"
+       cy="14.583334"
        cx="15.24"
        id="circle66"
        style="display:inline;opacity:1;vector-effect:none;fill:#ff00ff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
     <circle
        r="4"
-       cy="84.975685"
+       cy="99.726204"
        cx="15.24"
        id="circle1"
        style="display:inline;opacity:1;vector-effect:none;fill:#00ff00;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        inkscape:label="clock" />
+    <circle
+       style="display:inline;opacity:1;vector-effect:none;fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="circle2"
+       cx="15.24"
+       cy="28.773811"
+       r="4"
+       inkscape:label="level" />
+    <circle
+       style="display:inline;opacity:1;vector-effect:none;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="circle3"
+       cx="15.24"
+       cy="57.154766"
+       r="4"
+       inkscape:label="mode" />
+    <circle
+       cy="85.535721"
+       cx="15.24"
+       id="circle4"
+       style="display:inline;opacity:1;vector-effect:none;fill:#00ff00;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       inkscape:label="activate"
+       r="4" />
   </g>
 </svg>

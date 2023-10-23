@@ -21,7 +21,7 @@ struct Threshold : Module {
 	};
 
     float charge = 0.f;
-    
+
     dsp::PulseGenerator pulseGenerator;
     bool clockPulse = false;
 
@@ -46,7 +46,7 @@ struct Threshold : Module {
 
         if (inputs[CLOCK_INPUT].isConnected()) {
             if (clockTrigger.process(inputs[CLOCK_INPUT].getVoltage(), 0.1f, 1.f)) {
-                this->charge += .1;
+                this->charge += 1.0 / (1 + round(63 * params[THRESHOLD_PARAM].getValue()));
             }
         }
 

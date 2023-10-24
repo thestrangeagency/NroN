@@ -83,6 +83,8 @@ struct Threshold : Module {
   
         lights[ACTIVE_LIGHT].setBrightness(activated ? 1.f : 0.f);
         lights[CHARGE_LIGHT].setBrightness(charge);
+
+        outputs[LEVEL_OUTPUT].setVoltage(charge * 10.f);
 	}
 };
 
@@ -96,18 +98,18 @@ struct ThresholdWidget : ModuleWidget {
 		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(15.24, 42.964)), module, Threshold::THRESHOLD_PARAM));
-		addParam(createParamCentered<CKSS>(mm2px(Vec(15.24, 57.155)), module, Threshold::MODE_PARAM));
+        addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(15.24, 49.768)), module, Threshold::THRESHOLD_PARAM));
+		addParam(createParamCentered<CKSS>(mm2px(Vec(15.24, 63.656)), module, Threshold::MODE_PARAM));
 
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(15.24, 71.345)), module, Threshold::RESET_INPUT));
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(15.24, 85.536)), module, Threshold::ACTIVATE_INPUT));
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(15.24, 99.726)), module, Threshold::CLOCK_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(15.24, 77.544)), module, Threshold::RESET_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(15.24, 91.432)), module, Threshold::ACTIVATE_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(15.24, 105.32)), module, Threshold::CLOCK_INPUT));
 
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(15.24, 28.774)), module, Threshold::LEVEL_OUTPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(15.24, 113.917)), module, Threshold::OUT_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(15.24, 35.88)), module, Threshold::LEVEL_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(15.24, 119.208)), module, Threshold::OUT_OUTPUT));
 
-        addChild(createLightCentered<MediumLight<GreenLight>>(mm2px(Vec(10.24, 14.583)), module, Threshold::ACTIVE_LIGHT));
-		addChild(createLightCentered<MediumLight<YellowLight>>(mm2px(Vec(20.24, 14.583)), module, Threshold::CHARGE_LIGHT));
+		addChild(createLightCentered<MediumLight<GreenLight>>(mm2px(Vec(9.948, 21.992)), module, Threshold::ACTIVE_LIGHT));
+		addChild(createLightCentered<MediumLight<YellowLight>>(mm2px(Vec(20.532, 21.992)), module, Threshold::CHARGE_LIGHT));
 	}
 };
 

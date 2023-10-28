@@ -24,7 +24,7 @@ struct ThresholdExpander : Module
     ThresholdExpander()
     {
         config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
-        configParam(THRESHOLD_AMOUNT_PARAM, 0.f, 1.f, 0.f, "Threshold CV Amount");
+        configParam(THRESHOLD_AMOUNT_PARAM, -1.f, 1.f, 0.f, "Threshold CV Amount");
         configInput(THRESHOLD_INPUT, "Threshold CV");
     }
 

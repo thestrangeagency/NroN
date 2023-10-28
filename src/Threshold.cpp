@@ -1,4 +1,5 @@
 #include "plugin.hpp"
+#include "ThresholdExpander.hpp"
 
 struct Threshold : Module
 {
@@ -56,12 +57,15 @@ struct Threshold : Module
     {
 
         bool activated = params[MODE_PARAM].getValue() < 0.5f || active;
+        float threshold = params[THRESHOLD_PARAM].getValue();
 
         Module *rightModule = getRightExpander().module;
         if (rightModule && rightModule->model == modelThresholdExpander)
         {
             float threshold_cv_amount = rightModule->getParam(ThresholdExpander::THRESHOLD_AMOUNT_PARAM).getValue();
             float threshold_cv = rightModule->getInput(ThresholdExpander::THRESHOLD_INPUT).getVoltage();
+            threshold = threshold + threshold_cv * threshold_cv_amount;
+            threshold = std::min(std::max(threshold, 0.f), 1.f);
         }
 
         if (inputs[RESET_INPUT].isConnected())
@@ -87,7 +91,7 @@ struct Threshold : Module
             {
 
                 if (activated)
-                    this->charge += 1.0 / (1 + round(63 * params[THRESHOLD_PARAM].getValue()));
+                    this->charge += 1.0 / (1 + round(63 * threshold));
             }
         }
 

@@ -18,6 +18,12 @@
       "name": "Threshold",
       "description": "Fires when threshold reached",
       "tags": []
+    },
+    {
+      "slug": "ThresholdExpander",
+      "name": "ThresholdExpander",
+      "description": "Adds threshold CV control",
+      "tags": []
     }
   ]
 }

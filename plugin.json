@@ -24,6 +24,12 @@
       "name": "ThresholdExpander",
       "description": "Adds threshold CV control",
       "tags": []
-    }
+    },
+    {
+        "slug": "Repeat",
+        "name": "Repeat",
+        "description": "Repeats every period",
+        "tags": []
+      }
   ]
 }

@@ -11,3 +11,4 @@ extern Plugin *pluginInstance;
 
 extern Model *modelThreshold;
 extern Model *modelThresholdExpander;
+extern Model *modelRepeat;

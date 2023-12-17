@@ -25,6 +25,7 @@ struct Repeat : Module
         PERIOD_PARAM,
         REPEAT_PARAM,
         RESET_PERIOD_PARAM,
+        THROUGH_PARAM,
         PARAMS_LEN
     };
     enum InputId
@@ -52,6 +53,7 @@ struct Repeat : Module
         configParam(PERIOD_PARAM, 0.f, MAX_COUNT, 8.f, "Period");
         configParam(REPEAT_PARAM, 0.f, MAX_COUNT, 1.f, "Repeat");
         configParam(RESET_PERIOD_PARAM, 0.f, MAX_COUNT, 1.f, "Reset Period");
+        configSwitch(THROUGH_PARAM, 0.0f, 1.0f, 1.0f, "Through", {"Off", "On"});
 
         configInput(CLOCK_INPUT, "Clock");
         configInput(RESET_INPUT, "Reset");
@@ -64,7 +66,9 @@ struct Repeat : Module
         float repeat_v = params[REPEAT_PARAM].getValue();
         float period_v = params[PERIOD_PARAM].getValue();
         float reset_period_v = params[RESET_PERIOD_PARAM].getValue();
+        float through_v = params[THROUGH_PARAM].getValue();
 
+        bool through = through_v > .5;
         bool shouldPulse = false;
 
         if (inputs[RESET_INPUT].isConnected())
@@ -97,7 +101,8 @@ struct Repeat : Module
             if (pulseTrigger.process(inputs[PULSE_INPUT].getVoltage(), 0.1f, 1.f))
             {
                 inputCount++;
-                shouldPulse = true;
+                if (through)
+                    shouldPulse = true;
             }
         }
 
@@ -133,6 +138,8 @@ struct RepeatWidget : ModuleWidget
     {
         setModule(module);
         setPanel(createPanel(asset::plugin(pluginInstance, "res/Threshold.svg")));
+
+        addParam(createParamCentered<CKSS>(mm2px(Vec(15.24, 20)), module, Repeat::THROUGH_PARAM));
 
         addParam(createParamCentered<RoundBlackSnapKnob>(mm2px(Vec(15.24, 35)), module, Repeat::PERIOD_PARAM));
         addParam(createParamCentered<RoundBlackSnapKnob>(mm2px(Vec(15.24, 50)), module, Repeat::REPEAT_PARAM));

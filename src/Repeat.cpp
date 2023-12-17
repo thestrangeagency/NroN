@@ -109,7 +109,7 @@ struct Repeat : Module
         // period threshold reached
         if (inputCount >= period_v)
         {
-            pulseTrainCount = round(repeat_v) - 1;
+            pulseTrainCount = round(repeat_v);
             inputCount = 0;
 
             // acts as a mute when REPEAT_PARAM is 0

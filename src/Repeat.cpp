@@ -5,12 +5,14 @@
 /*
     Counts triggers coming in via PULSE_INPUT. When trigger count meets PERIOD_PARAM, begins emitting REPEAT_PARAM number of pulses, one per clock tick. If REPEAT_PARAM is zero acts as a mute.
 
+    The RESET_PERIOD_PARAM can be used to reset every N reset inputs. This works well with an EOC signal, when we want repeats every N input cycles.
 */
 
 struct Repeat : Module
 {
     int inputCount = 0;
     int pulseTrainCount = 0;
+    int resetCount = 0;
 
     dsp::PulseGenerator pulseGenerator;
 
@@ -22,6 +24,7 @@ struct Repeat : Module
     {
         PERIOD_PARAM,
         REPEAT_PARAM,
+        RESET_PERIOD_PARAM,
         PARAMS_LEN
     };
     enum InputId
@@ -48,6 +51,7 @@ struct Repeat : Module
         config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
         configParam(PERIOD_PARAM, 0.f, MAX_COUNT, 8.f, "Period");
         configParam(REPEAT_PARAM, 0.f, MAX_COUNT, 1.f, "Repeat");
+        configParam(RESET_PERIOD_PARAM, 0.f, MAX_COUNT, 1.f, "Reset Period");
 
         configInput(CLOCK_INPUT, "Clock");
         configInput(RESET_INPUT, "Reset");
@@ -59,7 +63,22 @@ struct Repeat : Module
     {
         float repeat_v = params[REPEAT_PARAM].getValue();
         float period_v = params[PERIOD_PARAM].getValue();
+        float reset_period_v = params[RESET_PERIOD_PARAM].getValue();
+
         bool shouldPulse = false;
+
+        if (inputs[RESET_INPUT].isConnected())
+        {
+            if (resetTrigger.process(inputs[RESET_INPUT].getVoltage(), 0.1f, 1.f))
+            {
+                if (++resetCount >= round(reset_period_v))
+                {
+                    inputCount = 0;
+                    pulseTrainCount = 0;
+                    resetCount = 0;
+                }
+            }
+        }
 
         if (inputs[CLOCK_INPUT].isConnected())
         {
@@ -70,15 +89,6 @@ struct Repeat : Module
                     shouldPulse = true;
                     pulseTrainCount--;
                 }
-            }
-        }
-
-        if (inputs[RESET_INPUT].isConnected())
-        {
-            if (resetTrigger.process(inputs[RESET_INPUT].getVoltage(), 0.1f, 1.f))
-            {
-                inputCount = 0;
-                pulseTrainCount = 0;
             }
         }
 
@@ -124,8 +134,9 @@ struct RepeatWidget : ModuleWidget
         setModule(module);
         setPanel(createPanel(asset::plugin(pluginInstance, "res/Threshold.svg")));
 
-        addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(15.24, 49.768)), module, Repeat::PERIOD_PARAM));
-        addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(15.24, 64.768)), module, Repeat::REPEAT_PARAM));
+        addParam(createParamCentered<RoundBlackSnapKnob>(mm2px(Vec(15.24, 35)), module, Repeat::PERIOD_PARAM));
+        addParam(createParamCentered<RoundBlackSnapKnob>(mm2px(Vec(15.24, 50)), module, Repeat::REPEAT_PARAM));
+        addParam(createParamCentered<RoundBlackSnapKnob>(mm2px(Vec(15.24, 65)), module, Repeat::RESET_PERIOD_PARAM));
 
         addInput(createInputCentered<PJ301MPort>(mm2px(Vec(15.24, 105.32)), module, Repeat::CLOCK_INPUT));
         addInput(createInputCentered<PJ301MPort>(mm2px(Vec(15.24, 77.544)), module, Repeat::RESET_INPUT));

@@ -151,8 +151,8 @@ struct RepeatWidget : ModuleWidget
 
         addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(15.24, 119.208)), module, Repeat::PULSE_OUTPUT));
 
-        addChild(createLightCentered<MediumLight<GreenLight>>(mm2px(Vec(9.948, 21.992)), module, Repeat::TRAIN_COUNT_LIGHT));
-        addChild(createLightCentered<MediumLight<YellowLight>>(mm2px(Vec(20.532, 21.992)), module, Repeat::INPUT_COUNT_LIGHT));
+        addChild(createLightCentered<MediumLight<GreenLight>>(mm2px(Vec(9.948, 21.992)), module, Repeat::INPUT_COUNT_LIGHT));
+        addChild(createLightCentered<MediumLight<YellowLight>>(mm2px(Vec(20.532, 21.992)), module, Repeat::TRAIN_COUNT_LIGHT));
     }
 };
 
